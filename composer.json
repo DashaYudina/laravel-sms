@@ -1,0 +1,33 @@
+{
+    "name": "yudina/laravel-sms-notification",
+    "description": "Sms notifications",
+    "keywords": ["laravel", "sms", "notifications"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daria Yudina",
+            "email": "dasha_2195@mail.ru"
+        }
+    ],
+    "require": {
+        "php": "^7.1.3",
+        "illuminate/support": "5.6.x",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yudina\\LaravelSmsNotification\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Yudina\\LaravelSmsNotification\\SmsSenderServiceProvider"
+            ]
+        }
+    }
+}
