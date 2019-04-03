@@ -5,6 +5,7 @@ namespace Yudina\LaravelSmsNotification\Factory;
 
 use Yudina\LaravelSmsNotification\Exceptions\SmsProviderNotFound;
 use Yudina\LaravelSmsNotification\Providers\ISms;
+use Yudina\LaravelSmsNotification\Providers\SmscRu;
 use Yudina\LaravelSmsNotification\Providers\SmsRu;
 
 class SmsFactory
@@ -22,7 +23,7 @@ class SmsFactory
 
     public function createDefault(): SmsFactory
     {
-        return new SmsFactory(new SmsRu());
+        return new SmsFactory(new SmsRu(), new SmscRu());
     }
 
     public function create(string $driver): ISms
