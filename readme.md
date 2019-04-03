@@ -3,7 +3,9 @@
 This package makes it easy to send SMS notifications for some sms providers with Laravel 5.8.
 
 Supported SMS providers:
-* [SMSRU](http://sms.ru)
+* [SMS.RU](http://sms.ru)
+* [SMSC.RU](https://smsc.ru)
+
 ## Installation
 
 Add SmsNotification package to your Laravel project via composer:
