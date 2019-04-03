@@ -9,6 +9,7 @@ class SmscRu extends SMS
     private $login;
     private $password;
     private $url;
+    private $sender;
 
     public function create(array $config): ISms {
         foreach ($config as $key => $entry) {
@@ -18,6 +19,8 @@ class SmscRu extends SMS
                 $this->url = $entry;
             } else if ($key === 'password') {
                 $this->password = $entry;
+            } else if ($key === 'sender') {
+                $this->sender = $entry;
             }
         }
 
@@ -31,7 +34,7 @@ class SmscRu extends SMS
 
     protected function createSenderUrl(string $msg, $phones)
     {
-        return  "{$this->url}/sys/send.php?login={$this->login}&psw={$this->password}&phones={$phones}&mes={$msg}&fmt=3";
+        return  "{$this->url}/sys/send.php?login={$this->login}&psw={$this->password}&phones={$phones}&mes={$msg}&fmt=3&sender={$this->sender}";
     }
 
     protected function createCheckCostUrl(string $msg, $phones)

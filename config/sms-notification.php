@@ -16,7 +16,8 @@ return [
         'smscru' => [
             'login' => env('SMSCRU_LOGIN'),
             'password' => env('SMSCRU_PASSWORD'),
-            'url' => env('SMSCRU_URL')
+            'url' => env('SMSCRU_URL'),
+            'sender' => env('SMSCRU_SENDER')
         ]
     ]
 ];
