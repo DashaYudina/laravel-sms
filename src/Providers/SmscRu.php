@@ -2,6 +2,7 @@
 
 namespace Yudina\LaravelSmsNotification\Providers;
 
+use Exception;
 
 class SmscRu extends SMS
 {
@@ -31,6 +32,103 @@ class SmscRu extends SMS
     {
         return $driver === $this->driver;
     }
+
+    public function getRegisteredSendersList() {
+        try {
+            $method     = 'GET';
+            $request    = $this->createSendersListUrl();
+            $response   = $this->sendRequest($method, $request);
+
+            if ($response == null || isset($response->error)) {
+                return null;
+            }
+
+            return $response;
+        } catch (Exception $exception) {
+            return null;
+        }
+    }
+
+    public function addNewSender(string $sender, string $comment) {
+        try {
+            $method     = 'GET';
+            $request    = $this->createAddNewSenderUrl($sender, $comment);
+            $response   = $this->sendRequest($method, $request);
+
+            if ($response == null || isset($response->error) || !isset($response->sender)) {
+                return null;
+            }
+
+            return $response->sender;
+        } catch (Exception $exception) {
+            return null;
+        }
+    }
+
+    public function changeSender(string $sender, string $comment) {
+        try {
+            $method     = 'GET';
+            $request    = $this->createChangeSenderUrl($sender, $comment);
+            $response   = $this->sendRequest($method, $request);
+
+            if ($response == null || isset($response->error)) {
+                return null;
+            }
+
+            return true;
+        } catch (Exception $exception) {
+            return false;
+        }
+    }
+
+    public function deleteSender(string $sender, string $comment) {
+        try {
+            $method     = 'GET';
+            $request    = $this->createDeleteSenderUrl($sender, $comment);
+            $response   = $this->sendRequest($method, $request);
+
+            if ($response == null || isset($response->error)) {
+                return null;
+            }
+
+            return true;
+        } catch (Exception $exception) {
+            return false;
+        }
+    }
+
+    public function sendSenderCode(string $sender) {
+        try {
+            $method     = 'GET';
+            $request    = $this->createSenderSendCodeUrl($sender);
+            $response   = $this->sendRequest($method, $request);
+
+            if ($response == null || isset($response->error)) {
+                return false;
+            }
+
+            return true;
+        } catch (Exception $exception) {
+            return false;
+        }
+    }
+
+    public function checkSenderCode(string $sender, $code) {
+        try {
+            $method     = 'GET';
+            $request    = $this->createSenderCheckCodeUrl($sender, $code);
+            $response   = $this->sendRequest($method, $request);
+
+            if ($response == null || isset($response->error)) {
+                return false;
+            }
+
+            return true;
+        } catch (Exception $exception) {
+            return false;
+        }
+    }
+
 
     protected function createSenderUrl(string $msg, $phones)
     {
@@ -72,5 +170,29 @@ class SmscRu extends SMS
         }
 
         return $response->cost;
+    }
+
+    private function createSendersListUrl() {
+        return "{$this->url}/sys/senders.php?get=1&login={$this->login}&psw={$this->password}&fmt=3";
+    }
+
+    private function createAddNewSenderUrl(string $sender, string $cmt) {
+        return "{$this->url}/sys/senders.php?add=1&login={$this->login}&psw={$this->password}&sender={$sender}&cmt={$cmt}&fmt=3";
+    }
+
+    private function createChangeSenderUrl(string $sender, string $cmt) {
+        return "{$this->url}/sys/senders.php?chg=1&login={$this->login}&psw={$this->password}&sender={$sender}&cmt={$cmt}&fmt=3";
+    }
+
+    private function createDeleteSenderUrl(string $sender, string $cmt) {
+        return "{$this->url}/sys/senders.php?del=1&login={$this->login}&psw={$this->password}&sender={$sender}&fmt=3";
+    }
+
+    private function createSenderSendCodeUrl(string $sender) {
+        return "{$this->url}/sys/senders.php?send_code=1&login={$this->login}&psw={$this->password}&sender={$sender}&fmt=3";
+    }
+
+    private function createSenderCheckCodeUrl(string $sender, $code) {
+        return "{$this->url}/sys/senders.php?check_code=1&login={$this->login}&psw={$this->password}&sender={$sender}&code={$code}&fmt=3";
     }
 }

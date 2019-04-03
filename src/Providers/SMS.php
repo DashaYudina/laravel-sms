@@ -67,7 +67,7 @@ abstract class SMS implements ISms
         return $result;
     }
 
-    private function sendRequest(string $method, string $request)
+    public function sendRequest(string $method, string $request)
     {
         try {
             $client     = new Client();
