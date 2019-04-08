@@ -1,7 +1,6 @@
 <?php
 
-namespace Yudina\LaravelSmsNotification\Providers;
-
+namespace Yudina\LaravelSmsNotification\Transport;
 
 interface ISms
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Yudina\LaravelSmsNotification\Providers;
+namespace Yudina\LaravelSmsNotification\Transport;
 
 use Exception;
 use GuzzleHttp\Client;
@@ -14,6 +14,14 @@ abstract class SMS implements ISms
     protected abstract function analyseGetBalanceResponse($response);
     protected abstract function analyseGetMessageCostResponse($response);
 
+    /**
+     * Send message to sms server.
+     *
+     * @param  string  $msg
+     * @param  mixed  $phones
+     *
+     * @return bool
+     */
     public function sendMessage(string $msg, $phones): bool
     {
         try {
@@ -31,6 +39,12 @@ abstract class SMS implements ISms
         }
     }
 
+    /**
+     * Get user balance from sms server.
+     *
+     *
+     * @return float
+     */
     public function getBalance(): float
     {
         try {
@@ -44,6 +58,14 @@ abstract class SMS implements ISms
         }
     }
 
+    /**
+     * Get message cost from sms server.
+     *
+     * @param  string  $msg
+     * @param  mixed  $phones
+     *
+     * @return float
+     */
     public function getMessagesCost(string $msg, $phones): float
     {
         try {
@@ -57,6 +79,13 @@ abstract class SMS implements ISms
         }
     }
 
+    /**
+     * Generate activated code.
+     *
+     * @param  int  $length
+     *
+     * @return string
+     */
     public function generateCode(int $length): string
     {
         $result = '';
@@ -67,6 +96,14 @@ abstract class SMS implements ISms
         return $result;
     }
 
+    /**
+     * Send request to server.
+     *
+     * @param  string  $method
+     * @param  string $request
+     *
+     * @return mixed
+     */
     public function sendRequest(string $method, string $request)
     {
         try {
@@ -79,6 +116,14 @@ abstract class SMS implements ISms
         }
     }
 
+    /**
+     * Check if it is possible send messaged to sms server.
+     *
+     * @param  string  $msg
+     * @param  mixed  $phones
+     *
+     * @return bool
+     */
     private function isPossibleSendMessages(string $msg, $phones): bool
     {
         $balance    = $this->getBalance();
@@ -90,6 +135,4 @@ abstract class SMS implements ISms
 
         return true;
     }
-
-
 }

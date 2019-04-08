@@ -2,7 +2,6 @@
 
 namespace Yudina\LaravelSmsNotification;
 
-
 use Illuminate\Notifications\Notification;
 use Yudina\LaravelSmsNotification\Exceptions\CouldNotSendNotification;
 

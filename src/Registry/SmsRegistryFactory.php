@@ -2,7 +2,6 @@
 
 namespace Yudina\LaravelSmsNotification\Registry;
 
-
 use Yudina\LaravelSmsNotification\Factory\SmsFactory;
 
 class SmsRegistryFactory
@@ -18,6 +17,13 @@ class SmsRegistryFactory
         }
     }
 
+    /**
+     * Create sms registry for all sms providers from config.
+     *
+     * @param  array  $config
+     *
+     * @return SmsRegistry
+     */
     public function create(array $config): SmsRegistry
     {
         $registry = new SmsRegistry();

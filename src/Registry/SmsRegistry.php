@@ -2,19 +2,33 @@
 
 namespace Yudina\LaravelSmsNotification\Registry;
 
-
 use Yudina\LaravelSmsNotification\Exceptions\SmsProviderNotFound;
-use Yudina\LaravelSmsNotification\Providers\ISms;
+use Yudina\LaravelSmsNotification\Transport\ISms;
 
 class SmsRegistry
 {
     private $providers;
 
+    /**
+     * Add new sms provider.
+     *
+     * @param  string  $key
+     * @param  ISms  $sms
+     *
+     * @return void
+     */
     public function add(string $key, ISms $sms): void
     {
         $this->providers[$key] = $sms;
     }
 
+    /**
+     * Get sms provider by driver.
+     *
+     * @param  string  $key
+     *
+     * @return ISms
+     */
     public function get(string $key): ISms
     {
         if (array_key_exists($key, $this->providers)) {

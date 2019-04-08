@@ -2,7 +2,6 @@
 
 namespace Yudina\LaravelSmsNotification;
 
-
 use Illuminate\Support\ServiceProvider;
 use Yudina\LaravelSmsNotification\Exceptions\InvalidConfiguration;
 use Yudina\LaravelSmsNotification\Registry\SmsRegistry;
@@ -35,11 +34,23 @@ class SmsSenderServiceProvider extends ServiceProvider
         $this->publishes([$this->configPath() => config_path('sms-notification.php')]);
     }
 
+    /**
+     * Create path to config.
+     *
+     *
+     * @return string
+     */
     protected function configPath()
     {
         return __DIR__ . '/../config/sms-notification.php';
     }
 
+    /**
+     * Create sms registry factory.
+     *
+     *
+     * @return SmsRegistry
+     */
     private function createSmsRegistryFactory(): SmsRegistry {
         $config = config('sms-notification');
 
