@@ -49,7 +49,9 @@ class SmsRu extends SMS
      */
     protected function createSenderUrl(string $msg, $phones)
     {
-        return  "{$this->url}/sms/send?api_id={$this->api_id}&to={$phones}&msg={$msg}&json=1";
+        // $msg = iconv("windows-1251", "utf-8", $msg);
+
+        return  "{$this->url}/sms/send?api_id={$this->api_id}&to={$phones}&msg=" . urlencode($msg) . "&json=1";
     }
 
     /**
@@ -62,7 +64,7 @@ class SmsRu extends SMS
      */
     protected function createCheckCostUrl(string $msg, $phones)
     {
-        return "{$this->url}/sms/cost?api_id={$this->api_id}&to={$phones}&msg={$msg}&json=1";
+        return "{$this->url}/sms/cost?api_id={$this->api_id}&to={$phones}&msg=" . urlencode($msg) . "&json=1";
     }
 
     /**

@@ -25,7 +25,7 @@ class SmsSenderServiceProvider extends ServiceProvider
                 throw InvalidConfiguration::configurationNotSet();
             }
 
-            return $app->get(SmsRegistry::class)->get($defaultSmsProvider);
+            return new SmsSender($app->get(SmsRegistry::class)->get($defaultSmsProvider));
         });
     }
 

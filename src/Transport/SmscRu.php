@@ -125,10 +125,10 @@ class SmscRu extends SMS
      *
      * @return mixed
      */
-    public function deleteSender(string $sender, string $comment) {
+    public function deleteSender(string $sender) {
         try {
             $method     = 'GET';
-            $request    = $this->createDeleteSenderUrl($sender, $comment);
+            $request    = $this->createDeleteSenderUrl($sender);
             $response   = $this->sendRequest($method, $request);
 
             if ($response == null || isset($response->error)) {
@@ -199,7 +199,9 @@ class SmscRu extends SMS
      */
     protected function createSenderUrl(string $msg, $phones)
     {
-        return  "{$this->url}/sys/send.php?login={$this->login}&psw={$this->password}&phones={$phones}&mes={$msg}&fmt=3&sender={$this->sender}";
+        $sender = $this->sender === false || $this->sender === '' ? '' : '&sender=' . urlencode($this->sender);
+
+        return  "{$this->url}/sys/send.php?login={$this->login}&psw={$this->password}&phones=" . urlencode($phones) . "&mes=" . urlencode($msg) . "&fmt=3" . $sender;
     }
 
     /**
@@ -212,7 +214,7 @@ class SmscRu extends SMS
      */
     protected function createCheckCostUrl(string $msg, $phones)
     {
-        return "{$this->url}/sys/send.php?login={$this->login}&psw={$this->password}&phones={$phones}&mes={$msg}&cost=1&fmt=3";
+        return "{$this->url}/sys/send.php?login={$this->login}&psw={$this->password}&phones=" . urlencode($phones) . "&mes=" . urlencode($msg) . "&cost=1&fmt=3";
     }
 
     /**
@@ -293,7 +295,7 @@ class SmscRu extends SMS
      * @return string
      */
     private function createAddNewSenderUrl(string $sender, string $cmt) {
-        return "{$this->url}/sys/senders.php?add=1&login={$this->login}&psw={$this->password}&sender={$sender}&cmt={$cmt}&fmt=3";
+        return "{$this->url}/sys/senders.php?add=1&login={$this->login}&psw={$this->password}&sender=" . urlencode($sender) . "&cmt=" . urlencode($cmt) . "&fmt=3";
     }
 
     /**
@@ -305,7 +307,7 @@ class SmscRu extends SMS
      * @return string
      */
     private function createChangeSenderUrl(string $sender, string $cmt) {
-        return "{$this->url}/sys/senders.php?chg=1&login={$this->login}&psw={$this->password}&sender={$sender}&cmt={$cmt}&fmt=3";
+        return "{$this->url}/sys/senders.php?chg=1&login={$this->login}&psw={$this->password}&sender=" . urlencode($sender) . "&cmt=" . urlencode($cmt) . "&fmt=3";
     }
 
     /**
@@ -316,7 +318,7 @@ class SmscRu extends SMS
      * @return string
      */
     private function createDeleteSenderUrl(string $sender) {
-        return "{$this->url}/sys/senders.php?del=1&login={$this->login}&psw={$this->password}&sender={$sender}&fmt=3";
+        return "{$this->url}/sys/senders.php?del=1&login={$this->login}&psw={$this->password}&sender=" . urlencode($sender) . "&fmt=3";
     }
 
     /**
@@ -327,7 +329,7 @@ class SmscRu extends SMS
      * @return string
      */
     private function createSenderSendCodeUrl(string $sender) {
-        return "{$this->url}/sys/senders.php?send_code=1&login={$this->login}&psw={$this->password}&sender={$sender}&fmt=3";
+        return "{$this->url}/sys/senders.php?send_code=1&login={$this->login}&psw={$this->password}&sender=" . urlencode($sender) . "&fmt=3";
     }
 
     /**
@@ -339,6 +341,6 @@ class SmscRu extends SMS
      * @return string
      */
     private function createSenderCheckCodeUrl(string $sender, $code) {
-        return "{$this->url}/sys/senders.php?check_code=1&login={$this->login}&psw={$this->password}&sender={$sender}&code={$code}&fmt=3";
+        return "{$this->url}/sys/senders.php?check_code=1&login={$this->login}&psw={$this->password}&sender=" . urlencode($sender) . "&code={$code}&fmt=3";
     }
 }
