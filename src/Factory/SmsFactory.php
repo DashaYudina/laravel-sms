@@ -1,11 +1,11 @@
 <?php
 
-namespace Yudina\LaravelSmsNotification\Factory;
+namespace Yudina\LaravelSms\Factory;
 
-use Yudina\LaravelSmsNotification\Exceptions\SmsProviderNotFound;
-use Yudina\LaravelSmsNotification\Transport\ISms;
-use Yudina\LaravelSmsNotification\Transport\SmscRu;
-use Yudina\LaravelSmsNotification\Transport\SmsRu;
+use Yudina\LaravelSms\Exceptions\SmsProviderNotFound;
+use Yudina\LaravelSms\Transport\ISms;
+use Yudina\LaravelSms\Transport\SmscRu;
+use Yudina\LaravelSms\Transport\SmsRu;
 
 class SmsFactory
 {

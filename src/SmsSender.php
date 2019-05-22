@@ -1,8 +1,8 @@
 <?php
 
-namespace Yudina\LaravelSmsNotification;
+namespace Yudina\LaravelSms;
 
-use Yudina\LaravelSmsNotification\Transport\ISms;
+use Yudina\LaravelSms\Transport\ISms;
 
 class SmsSender
 {

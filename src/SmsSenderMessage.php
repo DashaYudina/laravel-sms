@@ -1,6 +1,6 @@
 <?php
 
-namespace Yudina\LaravelSmsNotification;
+namespace Yudina\LaravelSms;
 
 class SmsSenderMessage
 {

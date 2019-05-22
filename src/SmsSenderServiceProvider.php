@@ -1,24 +1,24 @@
 <?php
 
-namespace Yudina\LaravelSmsNotification;
+namespace Yudina\LaravelSms;
 
 use Illuminate\Support\ServiceProvider;
-use Yudina\LaravelSmsNotification\Exceptions\InvalidConfiguration;
-use Yudina\LaravelSmsNotification\Registry\SmsRegistry;
-use Yudina\LaravelSmsNotification\Registry\SmsRegistryFactory;
-use Yudina\LaravelSmsNotification\Factory\SmsFactory;
+use Yudina\LaravelSms\Exceptions\InvalidConfiguration;
+use Yudina\LaravelSms\Registry\SmsRegistry;
+use Yudina\LaravelSms\Registry\SmsRegistryFactory;
+use Yudina\LaravelSms\Factory\SmsFactory;
 
 class SmsSenderServiceProvider extends ServiceProvider
 {
     public function register() {
-        $this->mergeConfigFrom($this->configPath(), 'sms-notification');
+        $this->mergeConfigFrom($this->configPath(), 'sms');
 
         $this->app->bind(SmsRegistry::class, function () {
             return $this->createSmsRegistryFactory();
         });
 
         $this->app->bind(SmsSender::class, function($app) {
-            $config             = config('sms-notification');
+            $config             = config('sms');
             $defaultSmsProvider = $config['default'];
 
             if (is_null($config) || is_null($defaultSmsProvider)) {
@@ -31,7 +31,7 @@ class SmsSenderServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->publishes([$this->configPath() => config_path('sms-notification.php')]);
+        $this->publishes([$this->configPath() => config_path('sms.php')]);
     }
 
     /**
@@ -42,7 +42,7 @@ class SmsSenderServiceProvider extends ServiceProvider
      */
     protected function configPath()
     {
-        return __DIR__ . '/../config/sms-notification.php';
+        return __DIR__ . '/../config/sms.php';
     }
 
     /**
@@ -52,7 +52,7 @@ class SmsSenderServiceProvider extends ServiceProvider
      * @return SmsRegistry
      */
     private function createSmsRegistryFactory(): SmsRegistry {
-        $config = config('sms-notification');
+        $config = config('sms');
 
         if (is_null($config)) {
             throw InvalidConfiguration::configurationNotSet();

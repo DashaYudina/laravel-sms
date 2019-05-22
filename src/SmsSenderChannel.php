@@ -1,9 +1,9 @@
 <?php
 
-namespace Yudina\LaravelSmsNotification;
+namespace Yudina\LaravelSms;
 
 use Illuminate\Notifications\Notification;
-use Yudina\LaravelSmsNotification\Exceptions\CouldNotSendNotification;
+use Yudina\LaravelSms\Exceptions\CouldNotSendNotification;
 
 class SmsSenderChannel
 {

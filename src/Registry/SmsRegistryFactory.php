@@ -1,8 +1,8 @@
 <?php
 
-namespace Yudina\LaravelSmsNotification\Registry;
+namespace Yudina\LaravelSms\Registry;
 
-use Yudina\LaravelSmsNotification\Factory\SmsFactory;
+use Yudina\LaravelSms\Factory\SmsFactory;
 
 class SmsRegistryFactory
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Yudina\LaravelSmsNotification\Exceptions;
+namespace Yudina\LaravelSms\Exceptions;
 
 use Exception;
 

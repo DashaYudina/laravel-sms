@@ -1,9 +1,9 @@
 <?php
 
-namespace Yudina\LaravelSmsNotification\Registry;
+namespace Yudina\LaravelSms\Registry;
 
-use Yudina\LaravelSmsNotification\Exceptions\SmsProviderNotFound;
-use Yudina\LaravelSmsNotification\Transport\ISms;
+use Yudina\LaravelSms\Exceptions\SmsProviderNotFound;
+use Yudina\LaravelSms\Transport\ISms;
 
 class SmsRegistry
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Yudina\LaravelSmsNotification\Transport;
+namespace Yudina\LaravelSms\Transport;
 
 class SmsRu extends SMS
 {
