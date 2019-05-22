@@ -11,12 +11,12 @@ Supported SMS providers:
 Add SmsNotification package to your Laravel project via composer:
 
 ``` bash
-composer required yudina/laravel-sms-notification
+composer required yudina/laravel-sms
 ```
 
 Then publish configuration file:
 ``` bash
-php artisan vendor:publish --provider="Yudina\LaravelSmsNotification\SmsSenderServiceProvider"
+php artisan vendor:publish --provider="Yudina\LaravelSms\SmsSenderServiceProvider"
 ```
 
 ## Settings up your account for select sms provider
@@ -26,13 +26,20 @@ Add the environment variables to your config/services.php:
 ``` bash
 // config/services.php
 ...
-'default' => env('SMS_PROVIDER', 'smsru'),
+'default' => env('SMS_PROVIDER', 'smscru'),
 
 'providers' => [
     'smsru' => [
         'api_id' => env('SMSRU_API_ID'),
         'url' => env('SMSRU_URL')
     ],
+    'smscru' => [
+        'login' => env('SMSCRU_LOGIN'),
+        'password' => env('SMSCRU_PASSWORD'),
+        'url' => env('SMSCRU_URL'),
+        'sender' => env('SMSCRU_SENDER')
+    ],
+    ...
 ]
 ...
 ```
@@ -42,6 +49,7 @@ Add your necessary keys to your .env:
  // .env
  SMSRU_API_ID=
  SMSRU_URL=
+ ...
 ```
 
 ## Usage
@@ -49,8 +57,8 @@ Add your necessary keys to your .env:
 Now you can use the channel in your `via()` method inside the notification:
 
 ``` php
-use Yudina\LaravelSmsNotification\SmsSenderChannel;
-use Yudina\LaravelSmsNotification\SmsSenderMessage;
+use Yudina\LaravelSms\SmsSenderChannel;
+use Yudina\LaravelSms\SmsSenderMessage;
 
 use Illuminate\Notifications\Notification;
 
