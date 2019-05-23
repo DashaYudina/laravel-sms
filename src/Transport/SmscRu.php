@@ -3,13 +3,14 @@
 namespace Yudina\LaravelSms\Transport;
 
 use Exception;
+use Yudina\LaravelSms\Exceptions\SmsException;
 
 class SmscRu extends SMS
 {
     private $driver = 'smscru';
+    private $url    = 'https://smsc.ru';
     private $login;
     private $password;
-    private $url;
     private $sender;
 
     /**
@@ -23,8 +24,6 @@ class SmscRu extends SMS
         foreach ($config as $key => $entry) {
             if ($key === 'login') {
                 $this->login = $entry;
-            } else if ($key === 'url') {
-                $this->url = $entry;
             } else if ($key === 'password') {
                 $this->password = $entry;
             } else if ($key === 'sender') {
@@ -59,7 +58,7 @@ class SmscRu extends SMS
             $request    = $this->createSendersListUrl();
             $response   = $this->sendRequest($method, $request);
 
-            if ($response == null || isset($response->error)) {
+            if (isset($response->error)) {
                 return null;
             }
 
@@ -190,16 +189,72 @@ class SmscRu extends SMS
     }
 
     /**
+     * Analyse server response for send message request.
+     *
+     * @param  string  $response
+     *
+     * @return bool
+     *
+     * @throws SmsException
+     */
+    protected function analyseSendMessageResponse($response)
+    {
+        if (isset($response->error_code)) {
+            throw SmsException::getExceptionInfo($response->error_code);
+        }
+
+        return true;
+    }
+
+    /**
+     * Analyse server response for get balance request.
+     *
+     * @param  string  $response
+     *
+     * @return mixed
+     *
+     *      * @throws SmsException
+     */
+    protected function analyseGetBalanceResponse($response)
+    {
+        if (isset($response->error) || !isset($response->balance)) {
+            throw SmsException::getExceptionInfo($response->error_code);
+        }
+
+        return $response->balance;
+    }
+
+    /**
+     * Analyse server response for get message cost request.
+     *
+     * @param  string  $response
+     *
+     * @return mixed
+     *
+     * @throws SmsException
+     */
+    protected function analyseGetMessageCostResponse($response)
+    {
+        if (isset($response->error) || !isset($response->cost)) {
+            throw SmsException::getExceptionInfo($response->error_code);
+        }
+
+        return $response->cost;
+    }
+
+    /**
      * Create sender url.
      *
      * @param  string  $msg
      * @param  mixed  $phones
+     * @param  mixed  $senderName
      *
      * @return string
      */
-    protected function createSenderUrl(string $msg, $phones)
+    protected function createSenderUrl(string $msg, $phones, $senderName = null)
     {
-        $sender = $this->sender === false || $this->sender === '' ? '' : '&sender=' . urlencode($this->sender);
+        $name   = $senderName ?? $this->sender;
+        $sender = $senderName === null || $this->sender === false || $this->sender === '' ? '' : '&sender=' . urlencode($name);
 
         return  "{$this->url}/sys/send.php?login={$this->login}&psw={$this->password}&phones=" . urlencode($phones) . "&mes=" . urlencode($msg) . "&fmt=3" . $sender;
     }
@@ -226,54 +281,6 @@ class SmscRu extends SMS
     protected function createBalanceUrl()
     {
         return "{$this->url}/sys/balance.php?login={$this->login}&psw={$this->password}&fmt=3";
-    }
-
-    /**
-     * Analyse server response for send message request.
-     *
-     * @param  string  $response
-     *
-     * @return bool
-     */
-    protected function analyseSendMessageResponse($response)
-    {
-        if ($response == null || isset($response->error)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Analyse server response for get balance request.
-     *
-     * @param  string  $response
-     *
-     * @return mixed
-     */
-    protected function analyseGetBalanceResponse($response)
-    {
-        if ($response == null || isset($response->error) || !isset($response->balance)) {
-            return -1;
-        }
-
-        return $response->balance;
-    }
-
-    /**
-     * Analyse server response for get message cost request.
-     *
-     * @param  string  $response
-     *
-     * @return mixed
-     */
-    protected function analyseGetMessageCostResponse($response)
-    {
-        if ($response == null || isset($response->error) || !isset($response->cost)) {
-            return -1;
-        }
-
-        return $response->cost;
     }
 
     /**

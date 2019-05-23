@@ -4,10 +4,11 @@ namespace Yudina\LaravelSms\Transport;
 
 use Exception;
 use GuzzleHttp\Client;
+use Yudina\LaravelSms\Exceptions\SmsException;
 
 abstract class SMS implements ISms
 {
-    protected abstract function createSenderUrl(string $msg, $phones);
+    protected abstract function createSenderUrl(string $msg, $phones, $sender = null);
     protected abstract function createCheckCostUrl(string $msg, $phones);
     protected abstract function createBalanceUrl();
     protected abstract function analyseSendMessageResponse($response);
@@ -19,23 +20,20 @@ abstract class SMS implements ISms
      *
      * @param  string  $msg
      * @param  mixed  $phones
+     * @param  mixed  $sender
      *
      * @return bool
      */
-    public function sendMessage(string $msg, $phones): bool
+    public function sendMessage(string $msg, $phones, $sender = null): bool
     {
         try {
-            if (!$this->isPossibleSendMessages($msg, $phones)) {
-                return false;
-            }
-
             $method     = 'GET';
-            $request    = $this->createSenderUrl($msg, $phones);
+            $request    = $this->createSenderUrl($msg, $phones, $sender);
             $response   = $this->sendRequest($method, $request);
 
             return $this->analyseSendMessageResponse($response);
         } catch (Exception $exception) {
-            return false;
+            throw SmsException::serviceRespondedWithError($exception);
         }
     }
 
@@ -54,7 +52,7 @@ abstract class SMS implements ISms
 
             return $this->analyseGetBalanceResponse($response);
         } catch (Exception $exception) {
-            return -1;
+            throw SmsException::serviceRespondedWithError($exception);
         }
     }
 
@@ -75,7 +73,7 @@ abstract class SMS implements ISms
 
             return $this->analyseGetMessageCostResponse($response);
         } catch (Exception $exception) {
-            return -1;
+            throw SmsException::serviceRespondedWithError($exception);
         }
     }
 
@@ -112,7 +110,7 @@ abstract class SMS implements ISms
 
             return json_decode($response->getBody()->getContents());
         } catch (Exception $exception) {
-            return null;
+            throw SmsException::serviceRespondedWithError($exception);
         }
     }
 
@@ -124,7 +122,7 @@ abstract class SMS implements ISms
      *
      * @return bool
      */
-    private function isPossibleSendMessages(string $msg, $phones): bool
+    public function isPossibleSendMessages(string $msg, $phones): bool
     {
         $balance    = $this->getBalance();
         $cost       = $this->getMessagesCost($msg, $phones);

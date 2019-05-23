@@ -5,8 +5,8 @@ namespace Yudina\LaravelSms\Transport;
 class SmsRu extends SMS
 {
     private $driver = 'smsru';
+    private $url    = 'https://sms.ru';
     private $api_id;
-    private $url;
 
     /**
      * Initialize sms provider.
@@ -19,8 +19,6 @@ class SmsRu extends SMS
         foreach ($config as $key => $entry) {
             if ($key === 'api_id') {
                 $this->api_id = $entry;
-            } else if ($key === 'url') {
-                $this->url = $entry;
             }
         }
 
@@ -44,10 +42,11 @@ class SmsRu extends SMS
      *
      * @param  string  $msg
      * @param  mixed  $phones
+     * @param  mixed  $sender
      *
      * @return string
      */
-    protected function createSenderUrl(string $msg, $phones)
+    protected function createSenderUrl(string $msg, $phones, $sender = null)
     {
         // $msg = iconv("windows-1251", "utf-8", $msg);
 

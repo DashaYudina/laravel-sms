@@ -38,7 +38,7 @@ class SmsSenderChannel
 
         $message->setRecipients($phones);
 
-        $this->smsSender->send($message->body, $message->recipients);
+        $this->smsSender->send($message->recipients, $message->body);
     }
 
     /**

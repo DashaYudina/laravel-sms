@@ -16,13 +16,14 @@ class SmsSender
     /**
      * Send the given messages to selected phones.
      *
-     * @param  string  $msg
      * @param  mixed  $phones
+     * @param  string  $msg
+     * @param  mixed  $sender
      *
      * @return bool
      */
-    public function send(string $msg, $phones)
+    public function send($phones, string $msg, $sender = null)
     {
-        return $this->sms->sendMessage($msg, $phones);
+        return $this->sms->sendMessage($msg, $phones, $sender);
     }
 }
