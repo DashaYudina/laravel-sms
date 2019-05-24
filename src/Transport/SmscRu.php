@@ -193,7 +193,7 @@ class SmscRu extends SMS
      *
      * @param  string  $response
      *
-     * @return bool
+     * @return mixed
      *
      * @throws SmsException
      */
@@ -203,7 +203,11 @@ class SmscRu extends SMS
             throw SmsException::getExceptionInfo($response->error_code);
         }
 
-        return true;
+        if (isset($response->id)) {
+            return $response->id;
+        }
+
+        throw SmsException::responseParametersError('id');
     }
 
     /**
@@ -213,15 +217,19 @@ class SmscRu extends SMS
      *
      * @return mixed
      *
-     *      * @throws SmsException
+     * @throws SmsException
      */
     protected function analyseGetBalanceResponse($response)
     {
-        if (isset($response->error) || !isset($response->balance)) {
+        if (isset($response->error)) {
             throw SmsException::getExceptionInfo($response->error_code);
         }
 
-        return $response->balance;
+        if (isset($response->balance)) {
+            return $response->balance;
+        }
+
+        throw SmsException::responseParametersError('balance');
     }
 
     /**
@@ -235,11 +243,15 @@ class SmscRu extends SMS
      */
     protected function analyseGetMessageCostResponse($response)
     {
-        if (isset($response->error) || !isset($response->cost)) {
+        if (isset($response->error)) {
             throw SmsException::getExceptionInfo($response->error_code);
         }
 
-        return $response->cost;
+        if (isset($response->cost)) {
+            return $response->cost;
+        }
+
+        throw SmsException::responseParametersError('cost');
     }
 
     /**

@@ -94,4 +94,14 @@ class SmsException extends Exception
     {
         return new static("Sending more than one identical request for sending an SMS message or sending more than 15 any requests at the same time.");
     }
+
+    public static function responseParametersError(string $parameter)
+    {
+        return new static("The response from the server does not contain the required parameter '{$parameter}'");
+    }
+
+    public static function responseError(int $code, string $message)
+    {
+        return new static("Sms service responded with an error '{$code}: {$message}'");
+    }
 }

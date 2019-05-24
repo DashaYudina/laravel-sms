@@ -2,6 +2,8 @@
 
 namespace Yudina\LaravelSms\Transport;
 
+use Yudina\LaravelSms\Exceptions\SmsException;
+
 class SmsRu extends SMS
 {
     private $driver = 'smsru';
@@ -82,12 +84,14 @@ class SmsRu extends SMS
      *
      * @param  string  $response
      *
-     * @return bool
+     * @return mixed
+     *
+     * @throws SmsException
      */
     protected function analyseSendMessageResponse($response)
     {
-        if ($response == null || $response->status_code != 100) {
-            return false;
+        if (isset($response->status_code) && $response->status_code !== 100) {
+            throw SmsException::responseError($response->status_code, $response->status_text);
         }
 
         return true;
@@ -98,15 +102,21 @@ class SmsRu extends SMS
      *
      * @param  string  $response
      *
-     * @return bool
+     * @return mixed
+     *
+     * @throws SmsException
      */
     protected function analyseGetBalanceResponse($response)
     {
-        if ($response == null || !isset($response->balance)) {
-            return -1;
+        if (isset($response->status) && $response->status === 'ERROR') {
+            throw SmsException::responseError($response->status_code, $response->status_text);
         }
 
-        return $response->balance;
+        if (isset($response->balance)) {
+            return $response->balance;
+        }
+
+        throw SmsException::responseParametersError('balance');
     }
 
     /**
@@ -114,14 +124,20 @@ class SmsRu extends SMS
      *
      * @param  string  $response
      *
-     * @return bool
+     * @return mixed
+     *
+     * @throws SmsException
      */
     protected function analyseGetMessageCostResponse($response)
     {
-        if ($response == null || !isset($response->total_cost)) {
-            return -1;
+        if (isset($response->status) && $response->status === 'ERROR') {
+            throw SmsException::responseError($response->status_code, $response->status_text);
         }
 
-        return $response->total_cost;
+        if (isset($response->total_cost)) {
+            return $response->total_cost;
+        }
+
+        throw SmsException::responseParametersError('total_cost');
     }
 }

@@ -26,4 +26,28 @@ class SmsSender
     {
         return $this->sms->sendMessage($msg, $phones, $sender);
     }
+
+    /**
+     * Get user balance from sms server.
+     *
+     *
+     * @return float
+     */
+    public function getBalance(): float
+    {
+        return $this->sms->getBalance();
+    }
+
+    /**
+     * Get message cost from sms server.
+     *
+     * @param  string  $msg
+     * @param  mixed  $phones
+     *
+     * @return float
+     */
+    public function getMessagesCost(string $msg, $phones): float
+    {
+        return $this->sms->getMessagesCost($msg, $phones);
+    }
 }
