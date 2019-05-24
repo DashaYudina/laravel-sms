@@ -30,13 +30,11 @@ Add the environment variables to your config/services.php:
 
 'providers' => [
     'smsru' => [
-        'api_id' => env('SMSRU_API_ID'),
-        'url' => env('SMSRU_URL')
+        'api_id' => env('SMSRU_API_ID')
     ],
     'smscru' => [
         'login' => env('SMSCRU_LOGIN'),
         'password' => env('SMSCRU_PASSWORD'),
-        'url' => env('SMSCRU_URL'),
         'sender' => env('SMSCRU_SENDER')
     ],
     ...
@@ -48,7 +46,6 @@ Add your necessary keys to your .env:
 ``` bash
  // .env
  SMSRU_API_ID=
- SMSRU_URL=
  ...
 ```
 
