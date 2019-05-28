@@ -27,7 +27,10 @@
         "laravel": {
             "providers": [
                 "Yudina\\LaravelSms\\SmsSenderServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "SmsSender": "Yudina\\LaravelSms\\Facades\\SmsSender"
+            }
         }
     }
 }
