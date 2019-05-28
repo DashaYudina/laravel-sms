@@ -22,9 +22,9 @@ abstract class SMS implements ISms
      * @param  mixed  $phones
      * @param  mixed  $sender
      *
-     * @return bool
+     * @return mixed
      */
-    public function sendMessage(string $msg, $phones, $sender = null): bool
+    public function sendMessage(string $msg, $phones, $sender = null)
     {
         try {
             $method     = 'GET';
