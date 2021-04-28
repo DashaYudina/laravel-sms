@@ -50,8 +50,6 @@ class SmsRu extends SMS
      */
     protected function createSenderUrl(string $msg, $phones, $sender = null)
     {
-        // $msg = iconv("windows-1251", "utf-8", $msg);
-
         return  "{$this->url}/sms/send?api_id={$this->api_id}&to={$phones}&msg=" . urlencode($msg) . "&json=1";
     }
 
